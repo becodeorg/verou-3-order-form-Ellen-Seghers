@@ -15,15 +15,23 @@ function whatIsHappening() {
     var_dump($_GET);
     echo '<h2>$_POST</h2>';
     var_dump($_POST);
-    echo '<h2>$_COOKIE</h2>';
-    var_dump($_COOKIE);
-    echo '<h2>$_SESSION</h2>';
-    var_dump($_SESSION);
+//    echo '<h2>$_COOKIE</h2>';
+//    var_dump($_COOKIE);
+//    echo '<h2>$_SESSION</h2>';
+//    var_dump($_SESSION);
 }
 
-// TODO: provide some products (you may overwrite the example)
+//Provide some products (you may overwrite the example)
 $products = [
-    ['name' => 'Your favourite drink', 'price' => 2.5],
+    ['name' => 'Harness Suit', 'price' => 17.0],
+    ['name' => 'Collar', 'price' => 7.5],
+    ['name' => 'Walking Line', 'price' => 13.0],
+    ['name' => 'Christmas Suit', 'price' => 11.5],
+    ['name' => 'Birthday Suit', 'price' => 21.0],
+    ['name' => 'Valentine Suit', 'price' => 22.5],
+    ['name' => 'Lion Costume', 'price' => 22.5],
+    ['name' => 'Black Bat Wings (Halloween)', 'price' => 20.5],
+    ['name' => 'Cap For Sun Protection', 'price' => 5.0],
 ];
 
 $totalValue = 0;
