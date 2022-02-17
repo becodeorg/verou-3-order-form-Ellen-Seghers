@@ -21,7 +21,7 @@ function whatIsHappening() {
 //    var_dump($_SESSION);
 }
 
-//Provide some products (you may overwrite the example)
+// Provide some products (you may overwrite the example)
 $products = [
     ['name' => 'Harness Suit', 'price' => 17.0],
     ['name' => 'Collar', 'price' => 7.5],
@@ -42,9 +42,29 @@ function validate()
     return [];
 }
 
-function handleForm()
-{
+function handleForm() {
+    global $products;
     // TODO: form related tasks (step 1)
+    $streetName = $_POST['street'];
+    $streetNumber = $_POST['streetnumber'];
+    $zipCode = $_POST['zipcode'];
+    $city = $_POST['city'];
+    $address = $streetName ." ". $streetNumber . " " . $zipCode . " " . $city;
+
+    $alertText = "Delivery address: $address Product list: ";
+
+    $product = array_keys($_POST['products']);
+    print_r($product);
+
+    for ($i = 0 ; $i < count($product) ; $i++){
+        $productKey = $product[$i];
+        $currentProduct = $products[$productKey];
+        $alertText .= $currentProduct['name'] . " €" . $currentProduct['price']." ";
+    }
+
+    ?>
+    <script>alert("<?= $alertText ?>")</script>
+    <?php
 
     // Validation (step 2)
     $invalidFields = validate();
@@ -56,8 +76,7 @@ function handleForm()
 }
 
 // TODO: replace this if by an actual check
-$formSubmitted = false;
-if ($formSubmitted) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     handleForm();
 }
 
