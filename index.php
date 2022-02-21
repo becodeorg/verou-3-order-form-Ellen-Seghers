@@ -35,49 +35,75 @@ $products = [
 ];
 
 $totalValue = 0;
+$errorFlag = false;
 
-function validate()
-{
+function validate() {
     // This function will send a list of invalid fields back
-    return [];
+    $errorArr = [];
+    if (empty($_POST['street'])){
+        array_push($errorArr, "Street is required!");
+    }
+    if (empty($_POST['streetnumber'])){
+        array_push($errorArr, "Streetnumber is required!");
+    }
+    if (empty($_POST['zipcode'])){
+        array_push($errorArr, "Zipcode is required!");
+    }
+    if (empty($_POST['city'])){
+        array_push($errorArr, "City is required!");
+    }
+    if (empty($_POST['email'])){
+        array_push($errorArr, "Email is required!");
+    }
+    if (empty($_POST['products'])){
+        array_push($errorArr, "Products are required!");
+    }
+    if (!is_numeric($_POST['zipcode'])){
+        array_push($errorArr, "Zipcode is not a number!");
+    }
+    if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        array_push($errorArr, "Email address is not valid!");
+    }
+
+    return $errorArr;
 }
 
 function handleForm() {
+    global $errorFlag;
     global $products;
-    // TODO: form related tasks (step 1)
-    $streetName = $_POST['street'];
-    $streetNumber = $_POST['streetnumber'];
-    $zipCode = $_POST['zipcode'];
-    $city = $_POST['city'];
-    $address = $streetName ." ". $streetNumber . " " . $zipCode . " " . $city;
-
-    $alertText = "Delivery address: $address Product list: ";
-
-    $product = array_keys($_POST['products']);
-    print_r($product);
-
-    for ($i = 0 ; $i < count($product) ; $i++){
-        $productKey = $product[$i];
-        $currentProduct = $products[$productKey];
-        $alertText .= $currentProduct['name'] . " €" . $currentProduct['price']." ";
-    }
-
-    ?>
-    <script>alert("<?= $alertText ?>")</script>
-    <?php
+    // Form related tasks (step 1)
 
     // Validation (step 2)
     $invalidFields = validate();
     if (!empty($invalidFields)) {
         // TODO: handle errors
-    } else {
-        // TODO: handle successful submission
+        for ($counter = 0; $counter < sizeof($invalidFields); $counter++) {
+            $error = $invalidFields[$counter];
+            print_r($error."<br>");
+        }
+        $errorFlag = true;
     }
-}
+    else {
+        // Handle successful submission
+        $streetName = $_POST['street'];
+        $streetNumber = $_POST['streetnumber'];
+        $zipCode = $_POST['zipcode'];
+        $city = $_POST['city'];
+        $address = $streetName ." ". $streetNumber . " " . $zipCode . " " . $city;
 
-// TODO: replace this if by an actual check
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    handleForm();
+        $alertText = "Delivery address: $address<br>Product list:<br><ul> ";
+
+        $product = array_keys($_POST['products']);
+
+        for ($i = 0 ; $i < count($product) ; $i++){
+            $productKey = $product[$i];
+            $currentProduct = $products[$productKey];
+            $alertText .="<li>". $currentProduct['name'] . " €" . $currentProduct['price']."</li><br>";
+        }
+
+        $alertText.= "</ul>";
+        print_r($alertText);
+    }
 }
 
 require 'form-view.php';

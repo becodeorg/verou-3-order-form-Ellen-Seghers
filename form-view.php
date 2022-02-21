@@ -13,20 +13,15 @@
 </head>
 <body>
 <div class="container">
+    <div class="alert alert-primary" role="alert">
+        <?php
+            // Replace this if by an actual check
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                handleForm();
+            }
+        ?>
+    </div>
     <h1>Place your order</h1>
-    <?php // Navigation for when you need it ?>
-    <?php /*
-    <nav>
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link active" href="?food=1">Order food</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="?food=0">Order drinks</a>
-            </li>
-        </ul>
-    </nav>
-    */ ?>
     <form method="post">
         <div class="form-row">
             <div class="form-group col-md-6">
@@ -76,6 +71,44 @@
 
     <footer>You already ordered <strong>&euro; <?php echo $totalValue ?></strong> of cat suits!</footer>
 </div>
+<?php
+if($errorFlag == true) {
+    fillForm();
+}
+    function fillForm () {
+        ?><script>
+            const email = document.getElementById("email");
+            email.value = "<?= $_POST['email']?>";
+
+            const city = document.getElementById("city");
+            city.value = "<?= $_POST['city']?>";
+
+            const zipcode = document.getElementById("zipcode");
+            zipcode.value = "<?= $_POST['zipcode']?>";
+
+            const streetNumber = document.getElementById("streetnumber");
+            streetNumber.value = "<?= $_POST['streetnumber']?>";
+
+            const street = document.getElementById("street");
+            street.value = "<?= $_POST['street']?>";
+
+            let checkBox;
+            <?php
+            if (sizeof($_POST['products']) > 0) {
+                $product = array_keys($_POST['products']);
+
+                for ($i = 0 ; $i < count($product) ; $i++){
+                    $productKey = $product[$i];
+                    ?>
+                        checkBox = document.querySelector('input[name="products[<?= $productKey?>]"]');
+                        checkBox.checked = true;
+                    <?php
+                }
+            }
+            ?>
+        </script><?php
+    }
+?>
 
 <style>
     footer {
